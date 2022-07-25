@@ -8,4 +8,4 @@ User = get_user_model()
 class CsvChunk(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     chunk_id = models.UUIDField(default=uuid.uuid4, primary_key=True)
-    file = models.CharField(max_length=255)
+    file = models.FileField(upload_to='files')
