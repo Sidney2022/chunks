@@ -38,6 +38,7 @@ def index(request):
                 zipF.write(f'files/{file}', compress_type=zipfile.ZIP_DEFLATED)
 
 
+
         for file in os.listdir('files'):
             os.remove((f'files/{file}'))        
         messages.info(request, 'file has been split successfully')
