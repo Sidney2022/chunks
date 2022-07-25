@@ -17,7 +17,7 @@ def index(request):
         file = request.FILES.get('doc')
         user = request.user
         
-        if type(chunk_size) != int:
+        if not chunk_size.isdigit():
             messages.info(request, 'Number field can only accept number inputs')
             return redirect('/')
         batch_no = 1
