@@ -1,4 +1,3 @@
-from fileinput import filename
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
@@ -18,7 +17,7 @@ def index(request):
         user = request.user
         
         if  chunk_size == '' or file == None:
-            messages.info(request, 'Number field can only accept number inputs')
+            messages.info(request, 'fields cannot be blank!')
             return redirect('/')
         batch_no = 1
         try:
@@ -79,8 +78,7 @@ def signin(request):
     
     return render(request, 'login.html')
 
-def signup(request):
-    return render(request, 'register.html')
+
 
 def signup(request):
        if request.method == "POST":
