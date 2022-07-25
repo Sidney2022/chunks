@@ -1,0 +1,126 @@
+* {
+       padding: 0;
+       margin: 0;
+       box-sizing: border-box;
+}
+
+body {
+       font-family: Arial, Helvetica, sans-serif;
+       line-height: 1.6em;
+       
+       background-color: #ddd;
+}
+
+.index {
+}
+.container {
+       max-width: 1440px;
+       margin: 0 auto;
+       width: 90%;
+}
+header{
+       background-color: teal;
+       color: #fff;
+
+}
+.navbar {
+       padding: 20px;
+}
+.flex {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       height: 100%;
+       gap: 20px;
+       align-items: flex-start;
+}
+
+header a {
+       color: #fff;
+}
+
+ul {
+       list-style: none;
+}
+
+a {
+       text-decoration: none;
+       color: #333;
+       padding: 10px;
+       display: inline-block;
+}
+
+div.grid {
+       display: grid;
+       grid-template-columns: repeat(2,1fr);
+       gap: 0;
+}
+.title{
+       grid-column:  span 4;
+       padding: 10px;
+       font-size: 1.7rem;
+       margin-bottom: 5px;
+       border-bottom: 1px solid #333;
+}
+.todo-body h1 {
+       font-size: 3rem;
+       padding: 20px;
+       color: #fff;
+
+}
+.todo-body {
+       background-color: #ddd;
+       padding: 10px;
+}
+
+.todo-body .grid {
+       background-color:#fff;
+       margin-top: 10px;
+       padding: 20px 10px;
+       border-radius: 5px;
+}
+.todo-body .flex {
+       justify-content: end;
+       padding: 10px;
+       align-items: flex-start;
+}
+
+.btn {
+       display: inline-block;
+       padding: 10px 20px;
+       background-color: teal;
+       outline: none;
+       border-radius: 6px;
+       color: #fff;
+}
+header .btn {
+       background : rgb(98, 173, 173) ;
+       opacity: .9;
+}
+
+.popup-wrapper {
+       /* background-color: red; */
+       background-color: #aaa;
+       padding: 30px;
+       width: 500px;
+       margin: 0 auto;
+       text-align: center;
+       transform: translateY(-400px);
+       display: none;
+}
+.active {
+       display: block;
+}
+.popup {
+       padding: 30px;
+}
+
+.popup p {
+       padding: 30px 0;
+       font-size: 20px;
+}
+
+.popup .btn2 {
+       margin:0 5px ;
+}
+

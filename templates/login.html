@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+       <meta charset="UTF-8">
+       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+       <!-- stylesheet -->
+       
+       <link rel="stylesheet" href=" {% static 'assets/styles.css' %} ">
+       <link rel="stylesheet" href=" {% static 'assets/forms.css' %} ">
+       <title>Login - Chunk Files</title>
+</head>
+<body>
+       <header>
+              <div class="container">
+                     <div class="navbar flex">
+                            <h1><a href="#">Chunk Files</a></h1>
+                            <nav>
+                                   <ul class="flex"> 
+                                          <!-- <li><a class="btn" href="">Home</a></li> -->
+                                               
+                                                 <li><a class="btn" href="/signup">Register</a></li>
+                                                 <li><a class="btn" href="/signin">Login</a></li>
+                                       
+                                   </ul>
+                            </nav>
+                     </div>
+              </div>
+       </header>
+
+       <section class="main-form">
+              <div class="container">
+                     <div class="form-wrapper">
+                            <h2 style="padding: 15px; text-align:center;"> Login to your Account </h2>
+
+                            <form action="signin" method="post">
+                                   {% csrf_token %}
+                            <!-- {{ form.as_p  }}
+                                   in
+                             -->
+                             <p style="color: rgb(143, 61, 61);">
+                                   {% for message in messages %}
+                                          {{message}}
+                                   {% endfor %}
+                             </p>
+                             <input type="text" name="username" id="" placeholder="Username">
+                             <!-- <input type="email" name="email" id="" placeholder="Email"> -->
+                             <input type="password" name="password" id="" placeholder="Password">
+                         
+
+
+                          
+
+                            <input type="submit" value="Login">
+                            </form>
+                            
+                            <p style="text-align: center ;">
+                                   Don't have an account? go to<a class="link-color" href="signup">Register</a>
+                            </p>
+                     </div>
+              </div>
+       </section>
+
+</body>
+</html>

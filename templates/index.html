@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" href=" {% static 'assets/styles.css' %} ">
+    <link rel="stylesheet" href=" {% static 'assets/forms.css' %} ">
+    <style>
+        .form-wrapper {
+            margin-top: 40px !important;
+            width: 400px;
+            margin: 0 auto;
+        }
+        .form-wrapper form input, input[type="submit"] {
+            display: block;
+            margin: 10px 0;
+            padding: 15px;
+            width: 100%;
+            outline: none;
+            border: 1px solid #ccc;   
+        }
+        .text-center {
+            text-align: center;
+        }
+
+    </style>
+    <title>CSV FILE CHUNK</title>
+</head>
+<body>
+    <div>
+
+        {% for message in messages %}
+        <p class="text-center">{{message}}</p>
+        {% endfor %}
+        <div class="form-wrapper">
+            <h1 class="text-center">Chunk CSV Files</h1>
+            <form action="/" method="post" enctype="multipart/form-data">  
+                {% csrf_token %}
+                <input type="number" name="chunk_no" placeholder="Number Of Rows Per File">
+                <input type="file" name="doc" >
+
+                <input type="submit" value="Split Files">
+            </form>
+        </div>
+        
+    </div>
+    
+
+
+    <div class="text-center">
+        <a href="/saved_chunks">view saved files</a>
+    <br>
+    <a href="/logout">Logout</a>
+    </div>
+</body>
+</html>

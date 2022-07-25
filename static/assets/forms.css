@@ -1,0 +1,105 @@
+.form-item {
+display: block;
+}
+
+input, textarea {
+       width: 100%;
+       padding: 10px;
+       outline: none;
+       margin-bottom: 10px;
+       border: 1px solid #bbb;
+}
+input:focus, textarea:focus {
+       border: 1px solid teal;
+
+}
+input[type='submit'] {
+       border: 0;
+       background-color: teal;
+       outline: none;
+       cursor: pointer;
+       transition: all .2s ease-in-out;
+       color: #fff;
+       display: inline-block;
+       border-radius: 5px;
+       margin: 0;
+       font-size: 15px;
+       
+}
+
+.alter-input {
+       padding: 15px 30px;
+       width: 40%;
+
+}
+input[type='submit']:hover {
+       opacity: .8;
+}
+.buttons {
+       display: flex;
+       justify-content: center;
+       gap: 10px;
+}
+.buttons a.btn {
+       width: 40%;
+       text-align: center;
+}
+.btn2 {
+       width: auto !important;
+       padding: 10px 30px !important;
+       background-color: teal;
+       color: #fff;
+       border-radius: 5px;
+}
+.form-wrapper {
+       width: 400px;
+       margin: 0 auto;
+       background-color: #fff;
+       padding: 20px;
+       border-radius: 7px;
+}
+.main-form .container {
+       display: flex;
+       align-items: center;
+       /* background-color: red; */
+       padding-top: 100px;
+}
+.main-form {
+       height: 100vh;
+       background-color: #ddd;
+}
+
+.delete {
+       padding: 30px;
+       padding-top: 80px;
+       text-align: center;
+}
+.delete p {
+       padding: 30px;
+       font-size: 20px;
+}
+.update .btn, input.btn2 {
+       /* width: auto; */
+       padding: 15px 30px !important;
+       margin:  0;
+}
+.update a.btn {
+       padding: 0 !important;
+}
+.update  {
+       display: flex;
+       justify-content: center;
+       gap: 20px;
+}
+
+.btn, .btn2 {
+       transition: all .3s ease-in-out;
+}
+
+.btn:hover, .btn2:hover {
+       opacity: .8;
+}
+
+.link-color {
+       color: red;
+}
