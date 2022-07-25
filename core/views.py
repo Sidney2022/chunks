@@ -30,10 +30,10 @@ def index(request):
         
         for chunk in pd.read_csv(file, chunksize=int(chunk_size)):
             new_file = "csv_split" + str(batch_no) + ".csv"
-            chunk.to_csv(f'files/{new_file}', index=False)
+            chunk.to_csv(f'/tmp/files/{new_file}', index=False)
             batch_no += 1
             
-        with zipfile.ZipFile(f'chunked_files/{user}/{user}-{file}.zip', 'w') as zipF:
+        with zipfile.ZipFile(f'/tmp/chunked_files/{user}/{user}-{file}.zip', 'w') as zipF:
             for file in os.listdir(f'files'):
                 zipF.write(f'files/{file}', compress_type=zipfile.ZIP_DEFLATED)
 
