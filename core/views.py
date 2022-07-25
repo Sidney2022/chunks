@@ -27,7 +27,6 @@ def index(request):
         except FileExistsError:
             pass
         
-        
         for chunk in pd.read_csv(file, chunksize=int(chunk_size)):
             new_file = "csv_split" + str(batch_no) + ".csv"
             chunk.to_csv(f'/tmp/files/{new_file}', index=False)
