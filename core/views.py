@@ -20,11 +20,7 @@ def index(request):
             messages.info(request, 'fields cannot be blank!')
             return redirect('/')
         batch_no = 1
-        try:
-            user_folder = str(user)
-            os.mkdir('chunked_files')
-        except FileExistsError:
-            pass
+        
         try:
             user_folder = str(user)
             os.mkdir(f'chunked_files/{user_folder}')
