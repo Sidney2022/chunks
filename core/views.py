@@ -76,10 +76,12 @@ def index(request):
         chunk_size = request.POST['chunk_no']
         file = request.FILES.get('doc')
         user = request.user
+        batch_no = 1
         
         if  chunk_size == '' or file == None:
             messages.info(request, 'fields cannot be blank!')
             return redirect('/')
+<<<<<<< HEAD
         batch_no = 1
       
         csv = CsvChunk.objects.create(user=user, file=file)
@@ -106,6 +108,31 @@ def index(request):
             os.remove(f'files/{ofile}')
               
         messages.info(request, 'file has been received successfully')
+=======
+        
+        
+        try:
+            user_folder = str(user)
+            os.mkdir(f'chunked_files/{user_folder}')
+        except FileExistsError:
+            pass
+        
+        
+        for chunk in pd.read_csv(file, chunksize=int(chunk_size)):
+            new_file = "csv_split" + str(batch_no) + ".csv"
+            chunk.to_csv(f'files/{new_file}', index=False)
+            batch_no += 1
+            
+        with zipfile.ZipFile(f'chunked_files/{user}/{user}-{file}.zip', 'w') as zipF:
+            for file in os.listdir(f'files'):
+                zipF.write(f'files/{file}', compress_type=zipfile.ZIP_DEFLATED)
+
+
+
+        for file in os.listdir('files'):
+            os.remove((f'files/{file}'))        
+        messages.info(request, 'file has been split successfully')
+>>>>>>> 12c351b0aa82a5d230f2a7ce272663fb7cc3ca57
         return redirect('/')
         
     else:
