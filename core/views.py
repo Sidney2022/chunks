@@ -81,7 +81,6 @@ def index(request):
         if  chunk_size == '' or file == None:
             messages.info(request, 'fields cannot be blank!')
             return redirect('/')
-<<<<<<< HEAD
         batch_no = 1
       
         csv = CsvChunk.objects.create(user=user, file=file)
@@ -108,7 +107,6 @@ def index(request):
             os.remove(f'files/{ofile}')
               
         messages.info(request, 'file has been received successfully')
-=======
         
         
         try:
@@ -132,7 +130,6 @@ def index(request):
         for file in os.listdir('files'):
             os.remove((f'files/{file}'))        
         messages.info(request, 'file has been split successfully')
->>>>>>> 12c351b0aa82a5d230f2a7ce272663fb7cc3ca57
         return redirect('/')
         
     else:
