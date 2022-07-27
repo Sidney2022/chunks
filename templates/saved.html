@@ -14,7 +14,10 @@
     <a href="{{file}}" download="">{{file}}</a>
     
     {% empty %}
-    <p>You do not have any files to download</p>
+    <div>
+        <p>You do not have any files to download</p>
+        <a href="/">Back</a>
+    </div>
     {% endfor %}
     
 </body>

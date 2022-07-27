@@ -37,10 +37,10 @@
         <p class="text-center">{{message}}</p>
         {% endfor %}
         <div class="form-wrapper">
-            <h1 class="text-center">Chunk CSV Files</h1>
+            <h1 class="text-center">Chunk CSV/JSON Files</h1>
             <form action="/" method="post" enctype="multipart/form-data">  
                 {% csrf_token %}
-                <input type="number" name="chunk_no" placeholder="Number Of Rows Per File">
+                <input type="number" name="chunk_no" placeholder="Enter Size of Expected Files (MB)">
                 <input type="file" name="doc" >
 
                 <input type="submit" value="Split Files">
