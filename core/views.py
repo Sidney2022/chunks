@@ -98,7 +98,7 @@ def index(request):
                 chunk = f.read(CHUNK_SIZE)
         os.remove(f'media/files/{file}')
         csv.delete()
-        with zipfile.ZipFile(f'chunked_files/{user}/{file_name}.zip', 'w') as zipF:
+        with zipfile.ZipFile(f'media/{user}/{file_name}.zip', 'w') as zipF:
             for nfile in os.listdir('media/files'):
                 zipF.write(f'media/files/{nfile}', compress_type=zipfile.ZIP_DEFLATED)
                 
