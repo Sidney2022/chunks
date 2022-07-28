@@ -74,13 +74,17 @@ def _split(upload_file):
 def index(request):
     if request.method == "POST":
         chunk_size = request.POST['chunk_no']
+        file_name = request.POST['file_name']
         file = request.FILES.get('doc')
         user = request.user
+        
         
         if  chunk_size == '' or file == None:
             messages.info(request, 'fields cannot be blank!')
             return redirect('/')
         batch_no = 1
+        if file_name == '':
+            file_name = file.name
       
         csv = CsvChunk.objects.create(user=user, file=file)
         csv.save()    
@@ -98,7 +102,7 @@ def index(request):
                         chunk = f.read(CHUNK_SIZE)
                 os.remove(f'media/files/{doc}')
         csv.delete()
-        with zipfile.ZipFile(f'chunked_files/{user}/{file.name}.zip', 'w') as zipF:
+        with zipfile.ZipFile(f'chunked_files/{user}/{file_name}.zip', 'w') as zipF:
             for nfile in os.listdir('files'):
                 zipF.write(f'files/{nfile}', compress_type=zipfile.ZIP_DEFLATED)
                 
@@ -115,10 +119,9 @@ def index(request):
 @login_required(login_url='/signin')
 def saved_chunks(request):
     user = request.user
-    files = []
-    for file in os.listdir(f'chunked_files/{user}'):
-        files.append(file)
-        print(file)
+    files = CsvChunk.objects.filter(user=user)
+    # for file in  os.listdir(f'chuked_files/{user}'):
+    #     files.append(file)
     return render(request, 'saved.html',{'files':files})
 
 
@@ -172,3 +175,7 @@ def logout(request):
        auth.logout(request)
        return redirect('/signin')
 
+# /git clone https://github.com/sibtc/simple-file-upload.git 
+# from https://simpleisbetterthancomplex.com/tutorial/2016/08/01/how-to-upload-files-with-django.html
+
+#how to download files from django media folders

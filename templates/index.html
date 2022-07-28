@@ -41,6 +41,8 @@
             <form action="/" method="post" enctype="multipart/form-data">  
                 {% csrf_token %}
                 <input type="number" name="chunk_no" placeholder="Enter Size of Expected Files (MB)">
+                <input type="text" name="file_name" id="" placeholder="Name Of Output File (leave blank to use defaut name)">
+
                 <input type="file" name="doc" >
 
                 <input type="submit" value="Split Files">
