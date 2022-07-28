@@ -12,8 +12,6 @@ from pathlib import Path
 
 
 
-read_buffer_size = 1024
-chunk_size = 1024 * 100000
 
 def _chunk_file(file, extension):
     print('files')
@@ -91,23 +89,21 @@ def index(request):
         megabyte_size = int (chunk_size)  #50mb
         CHUNK_SIZE = megabyte_size * 1000 * 1024
         file_number = 1
-        for doc in os.listdir('media/files'):
-            if doc == file.name :
-                with open(f'media/files/{doc}') as f:
-                    chunk = f.read(CHUNK_SIZE)
-                    while chunk:
-                        with open('files/csv_file-' + str(file_number) +'.csv',  'w') as chunk_file:
-                            chunk_file.write(chunk)
-                        file_number += 1
-                        chunk = f.read(CHUNK_SIZE)
-                os.remove(f'media/files/{doc}')
+        with open(f'media/files/{file}') as f:
+            chunk = f.read(CHUNK_SIZE)
+            while chunk:
+                with open('media/files/csv_file-' + str(file_number) +'.csv',  'w') as chunk_file:
+                    chunk_file.write(chunk)
+                file_number += 1
+                chunk = f.read(CHUNK_SIZE)
+        os.remove(f'media/files/{file}')
         csv.delete()
         with zipfile.ZipFile(f'chunked_files/{user}/{file_name}.zip', 'w') as zipF:
-            for nfile in os.listdir('files'):
-                zipF.write(f'files/{nfile}', compress_type=zipfile.ZIP_DEFLATED)
+            for nfile in os.listdir('media/files'):
+                zipF.write(f'media/files/{nfile}', compress_type=zipfile.ZIP_DEFLATED)
                 
-        for ofile in os.listdir('files'):
-            os.remove(f'files/{ofile}')
+        for ofile in os.listdir('media/files'):
+            os.remove(f'media/files/{ofile}')
               
         messages.info(request, 'file has been received successfully')
         return redirect('/')
