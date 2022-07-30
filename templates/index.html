@@ -37,25 +37,26 @@
         <p class="text-center">{{message}}</p>
         {% endfor %}
         <div class="form-wrapper">
-            <h1 class="text-center">Chunk CSV/JSON Files</h1>
+            <h1 class="text-center">Chunk CSV Files</h1>
             <form action="/" method="post" enctype="multipart/form-data">  
                 {% csrf_token %}
-                <input type="number" name="chunk_no" placeholder="Enter Size of Expected Files (MB)">
-                <input type="text" name="file_name" id="" placeholder="Name Of Output File (leave blank to use defaut name)">
+                <input type="number" name="chunk_no" placeholder="Enter Size of Expected Files (no of rows)">
+                <input type="text" name="file_name" id="" placeholder="Name Of Output File (leave blank to use default name)">
 
                 <input type="file" name="doc" >
 
-                <input type="submit" value="Split Files">
+                <input type="submit" value="Split File">
             </form>
         </div>
         
     </div>
     
-
-
+    
+    
     <div class="text-center">
         <a href="/saved_chunks">view saved files</a>
     <br>
+   
     <a href="/logout">Logout</a>
     </div>
 </body>

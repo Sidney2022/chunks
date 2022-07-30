@@ -1,14 +1,21 @@
+from importlib.resources import read_binary
+from statistics import mode
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from .models import CsvChunk
 
+from io import BytesIO
 import pandas as pd
 import zipfile
+from zipfile import ZIP_DEFLATED, ZipFile
+
 import os
 from sys import argv
 from pathlib import Path
+
 
 
 
@@ -71,54 +78,52 @@ def _split(upload_file):
 @login_required(login_url='/signin')
 def index(request):
     if request.method == "POST":
-        chunk_size = request.POST['chunk_no']
-        file_name = request.POST['file_name']
         file = request.FILES.get('doc')
+        ouput_name = request.POST['file_name']
+        chunk_size = request.POST['chunk_no']
         user = request.user
-        
-        
-        if  chunk_size == '' or file == None:
-            messages.info(request, 'fields cannot be blank!')
+        if chunk_size == '' or file == None:
+            messages.error(request, 'fields cannot be blank!')
             return redirect('/')
-        batch_no = 1
-        if file_name == '':
-            file_name = file.name
-      
-        csv = CsvChunk.objects.create(user=user, file=file)
-        csv.save()    
-        megabyte_size = int (chunk_size)  #50mb
-        CHUNK_SIZE = megabyte_size * 1000 * 1024
-        file_number = 1
-        with open(f'media/files/{file}') as f:
-            chunk = f.read(CHUNK_SIZE)
-            while chunk:
-                with open('media/files/csv_file-' + str(file_number) +'.csv',  'w') as chunk_file:
-                    chunk_file.write(chunk)
-                file_number += 1
-                chunk = f.read(CHUNK_SIZE)
-        os.remove(f'media/files/{file}')
-        csv.delete()
-        with zipfile.ZipFile(f'media/{user}/{file_name}.zip', 'w') as zipF:
-            for nfile in os.listdir('media/files'):
-                zipF.write(f'media/files/{nfile}', compress_type=zipfile.ZIP_DEFLATED)
-                
-        for ofile in os.listdir('media/files'):
-            os.remove(f'media/files/{ofile}')
-              
-        messages.info(request, 'file has been received successfully')
-        return redirect('/')
         
-    else:
-        return render(request, 'index.html')
+        if  file.name.endswith('csv')  :
+            if ouput_name == '':
+                ouput_name = file.name
+    
+            chunk_size = int(chunk_size)
+            batch_no = 1
+            for chunk in pd.read_csv(file, chunksize=chunk_size):
+                with ZipFile(f'media/{user}{ouput_name}-.zip', 'a') as zip_file:
+                    file_name = f"{ouput_name}-" + str(batch_no) + ".csv"
+                    zip_file.write(file_name,chunk.to_csv(file_name, index=False) ,compress_type=zipfile.ZIP_DEFLATED)
+                os.remove(file_name)
+                batch_no += 1
+                
+                
+            csv_obj = CsvChunk.objects.create(user=user, file=f'{user}{ouput_name}-.zip')
+            csv_obj.save()
+            
+            messages.info(request, 'file hs been split successfully')
+            return redirect('/new_chunk')
+        messages.error(request, 'invalid file format')
+        return redirect('/')
+    return render(request, 'index.html')
 
 
 @login_required(login_url='/signin')
 def saved_chunks(request):
     user = request.user
     files = CsvChunk.objects.filter(user=user)
-    # for file in  os.listdir(f'chuked_files/{user}'):
-    #     files.append(file)
+    
     return render(request, 'saved.html',{'files':files})
+
+@login_required(login_url='/signin')
+def new_chunk(request):
+    user = request.user
+    file = CsvChunk.objects.filter(user=user).first()
+    
+    
+    return render(request, 'new.html',{'file':file})
 
 
 def signin(request):
@@ -129,7 +134,7 @@ def signin(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect('/')
+            return redirect('/saved_chunks')
         else:
             messages.info(request, 'invalid login credentials')
             return redirect('/signin')
@@ -160,8 +165,9 @@ def signup(request):
               else:
                      new_user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
                      new_user.save()
-                     os.mkdir(f'chunked_files/{username}')
-                     return redirect('/signin')              
+                     user = auth.authenticate(username=username, password=password)
+                     auth.login(request, user)
+                     return redirect('/')              
        else:
               return render(request, 'register.html')
           

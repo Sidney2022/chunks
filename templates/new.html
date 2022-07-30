@@ -7,19 +7,14 @@
     <title>Saved Items</title>
 </head>
 <body>
-    <h1>Your Saved Files</h1>
-    {% for file in files %}
+    <h1>Your  File</h1>
 
     <p>download  <a href="{{file.file.url}}" download="">{{file.file}}</a></p>
     <!-- <br> -->
     <!-- <a href="/chunked_files/{{user}}/{{file}}" download="">{{file}}</a> -->
    
     
-    {% empty %}
-    <div>
-        <p>You do not have any files to download</p>
-    </div>
-    {% endfor %}
+ 
     
 <p>    <a href="/">Back</a>
 </p>    
