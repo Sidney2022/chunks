@@ -39,7 +39,7 @@ def index(request):
             chunk_size = int(chunk_size)
             batch_no = 1
             for chunk in pd.read_csv(file, chunksize=chunk_size):
-                with ZipFile(f'media/{user}{ouput_name}-.zip', 'a') as zip_file:
+                with ZipFile(f'media/{user}_{ouput_name}-.zip', 'a') as zip_file:
                     file_name = f"{ouput_name}-" + str(batch_no) + ".csv"
                     zip_file.write(file_name,chunk.to_csv(file_name, index=False) ,compress_type=zipfile.ZIP_DEFLATED)
                 os.remove(file_name)
