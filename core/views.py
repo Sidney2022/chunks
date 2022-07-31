@@ -46,7 +46,7 @@ def index(request):
                 batch_no += 1
                 
                 
-            csv_obj = CsvChunk.objects.create(user=user, file=f'{user}{ouput_name}-.zip')
+            csv_obj = CsvChunk.objects.create(user=user, file=f'{user}_{ouput_name}-.zip')
             csv_obj.save()
             
             messages.info(request, 'file hs been split successfully')
