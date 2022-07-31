@@ -68,7 +68,7 @@ def saved_chunks(request):
 @login_required(login_url='/signin')
 def new_chunk(request):
     user = request.user
-    file = CsvChunk.objects.filter(user=user).first()
+    file = CsvChunk.objects.filter(user=user).last()
     
     
     return render(request, 'new.html',{'file':file})
