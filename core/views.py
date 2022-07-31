@@ -1,5 +1,4 @@
-from importlib.resources import read_binary
-from statistics import mode
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
@@ -13,65 +12,7 @@ import zipfile
 from zipfile import ZIP_DEFLATED, ZipFile
 
 import os
-from sys import argv
 from pathlib import Path
-
-
-
-
-
-def _chunk_file(file, extension):
-    print('files')
-    current_chunk_size = 0
-    current_chunk = 1
-    done_reading = False
-    while not done_reading:
-        with open(f'files/{current_chunk}{extension}.chk', 'ab') as chunk:
-            while True:
-                bfr = file.read(read_buffer_size)
-                if not bfr:
-                    done_reading = True
-                    break
-
-                chunk.write(bfr)
-                current_chunk_size += len(bfr)
-                if current_chunk_size + read_buffer_size > chunk_size:
-                    current_chunk += 1
-                    current_chunk_size = 0
-                    break
-
-
-def _join():
-    p = Path.cwd()
-
-    chunks = list(p.rglob('*.chk'))
-    chunks.sort()
-    extension = chunks[0].suffixes[0]
-
-    with open(f'join{extension}', 'ab') as file:
-        for chunk in chunks:   
-            with open(chunk, 'rb') as piece:
-                while True:
-                    bfr = piece.read(read_buffer_size)
-                    if not bfr:
-                        break
-
-                    file.write(bfr)
-
-
-def _split(upload_file):
-    print('split')
-    # p = Path('files')
-    # file_to_split = None
-    # for f in p.iterdir():
-    #     if f.is_file() and f.name != '.':
-    #         file_to_split = f
-    #         break
-    
-    file_to_split = upload_file
-    # if file_to_split:
-    with open(file_to_split, 'rb') as file:
-        _chunk_file(file, file_to_split)
 
 
 
@@ -89,7 +30,12 @@ def index(request):
         if  file.name.endswith('csv')  :
             if ouput_name == '':
                 ouput_name = file.name
-    
+
+            try:
+                os.mkdir('media')
+            except FileExistsError:
+                pass
+            
             chunk_size = int(chunk_size)
             batch_no = 1
             for chunk in pd.read_csv(file, chunksize=chunk_size):
@@ -105,8 +51,10 @@ def index(request):
             
             messages.info(request, 'file hs been split successfully')
             return redirect('/new_chunk')
+        
         messages.error(request, 'invalid file format')
         return redirect('/')
+    
     return render(request, 'index.html')
 
 
@@ -124,6 +72,15 @@ def new_chunk(request):
     
     
     return render(request, 'new.html',{'file':file})
+
+
+@login_required(login_url='/signin')
+def save(request):
+    file_id = request.GET.get('file_id')
+    user=request.user
+    csv_object = CsvChunk.objects.get(user=user, file_id=file_id)
+    print(csv_object)
+    return redirect('/')
 
 
 def signin(request):
