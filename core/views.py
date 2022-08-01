@@ -1,6 +1,7 @@
 
-from django.http import HttpResponseRedirect
+
 from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
@@ -40,13 +41,14 @@ def index(request):
             batch_no = 1
             f_name = f'{user}_{ouput_name}-.zip'
             for chunk in pd.read_csv(file, chunksize=chunk_size):
-                with ZipFile(f'media/{f_name}', 'a') as zip_file:
+                with ZipFile(f'media/{user}_{ouput_name}-.zip', 'a') as zip_file:
                     file_name = f"{ouput_name}-" + str(batch_no) + ".csv"
                     zip_file.write(file_name,chunk.to_csv(file_name, index=False) ,compress_type=zipfile.ZIP_DEFLATED)
                 os.remove(file_name)
                 batch_no += 1
                 
-            csv_obj = CsvChunk.objects.create(user=user, file= f_name)
+            csv_obj = CsvChunk.objects.create(user=user, file=f'{user}_{ouput_name}-.zip')
+
             csv_obj.save()
             file = CsvChunk.objects.get(user=user,file=f_name)
             file_id = file.file_id
@@ -71,7 +73,6 @@ def saved_chunks(request):
 
 @login_required(login_url='/signin')
 def new_chunk(request, pk):
-    print(f'request method is {request.method}')
     user=request.user #logged in user
     file = CsvChunk.objects.filter(user=user, file_id=pk)
     if file.exists():
