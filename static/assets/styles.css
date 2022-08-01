@@ -123,4 +123,12 @@ header .btn {
 .popup .btn2 {
        margin:0 5px ;
 }
+#file_disp {
+       display: flex;
+       /* background-color: red; */
 
+}
+
+#file_disp a {
+       display:  inline-block;
+}

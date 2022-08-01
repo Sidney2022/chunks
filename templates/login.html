@@ -41,11 +41,9 @@
                             <!-- {{ form.as_p  }}
                                    in
                              -->
-                             <p style="color: rgb(143, 61, 61);">
-                                   {% for message in messages %}
-                                          {{message}}
-                                   {% endfor %}
-                             </p>
+                             {% for message in messages %}
+                             <p style="color: rgb(143, 61, 61);" id="msg">  {{message}}</p>
+                            {% endfor %}
                              <input type="text" name="username" id="" placeholder="Username">
                              <!-- <input type="email" name="email" id="" placeholder="Email"> -->
                              <input type="password" name="password" id="" placeholder="Password">
@@ -63,6 +61,8 @@
                      </div>
               </div>
        </section>
+       
+      
 
 </body>
 </html>
