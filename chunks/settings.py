@@ -135,11 +135,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 django_heroku.settings(locals())
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static', 'serviceworker.js')
 
 
-PWA_APP_NAME = 'geeksforgeeks'
-PWA_APP_DESCRIPTION = "GeeksForGeeks PWA"
+PWA_APP_NAME = 'chunkfile'
+PWA_APP_DESCRIPTION = "chunkfile PWA"
 PWA_APP_THEME_COLOR = '#000000'
 PWA_APP_BACKGROUND_COLOR = '#ffffff'
 PWA_APP_DISPLAY = 'standalone'
